@@ -1,0 +1,323 @@
+WindowManager:
+    MainWindow:
+    TestWindow:
+    InputImgWindow:
+    DetailedImgWindow:
+    ResultWindow:
+    CameraClick:
+    InputAnswers:
+    InputCamera:
+
+
+<MainWindow>:
+    name: "main"
+
+    canvas.before:
+        Color:
+            rgba: (169/255, 169/255, 169/255, 1)
+        Rectangle:
+            pos: self.pos
+            size: self.size
+
+    GridLayout:
+
+        cols:1
+        size_hint: (0.6, 0.7)
+        pos_hint:{"center_x": 0.5,"center_y":0.5}
+        Label:
+            text: "MCQ Automated Grading"
+            size: 1000,100
+            halign: "center"
+
+
+
+        Button:
+            text: "Input Correct Answers"
+            on_release: 
+                app.root.current = "inputans"
+                root.manager.transition.direction = "left"
+
+        Button:
+            text: "Image Mode"
+            on_release: 
+                app.root.current = "test"
+                root.manager.transition.direction = "left"
+
+        Button:
+            text: "Webcam Mode"
+            on_release: 
+                app.root.current = "camera"
+                root.manager.transition.direction = "left"
+
+    
+
+
+
+
+<TestWindow>:
+    canvas.before:
+        Color:
+            rgba: (169/255, 169/255, 169/255, 1)
+        Rectangle:
+            pos: self.pos
+            size: self.size
+    name: "test"
+
+    GridLayout:
+        cols:1
+        size_hint: (0.6, 0.7)
+        pos_hint:{"center_x": 0.5,"center_y":0.5}
+
+
+
+        GridLayout:
+            cols:2
+
+            Button:
+                id: selected_path
+                text:"choose image file"
+                on_release:
+                    root.file_chooser()
+                
+                    
+
+            Button:
+                text: "Show Output Image"
+                on_release:
+                    root.make_output()
+                    app.root.current = "inputimgwindow"
+                    root.manager.transition.direction = "left"
+        
+        Label:
+            canvas.before:
+                Color:
+                    rgba: (120/255, 120/255, 120/255, 1)
+                Rectangle:
+                    pos: self.pos
+                    size: self.size
+            id: obtained_mark
+            text:"obtained mark"
+        Button:
+            text: "Camera"
+            on_release:
+                app.root.current = "cam"
+                root.manager.transition.direction = "left"
+        Button:
+            text:"Go Back"
+            on_release:
+                app.root.current = "main"
+                root.manager.transition.direction = "right"
+
+
+<InputImgWindow>:
+    canvas.before:
+        Color:
+            rgba: (169/255, 169/255, 169/255, 1)
+        Rectangle:
+            pos: self.pos
+            size: self.size
+    name: "inputimgwindow"
+    GridLayout:
+
+        cols:1
+        Image:
+            id: inputimg
+            source:"start_cam.png"
+        
+        
+        GridLayout:
+            cols:2
+            size_hint: (0.6, 0.3)
+
+            Button:
+                text:"Show Detailed Image"
+                on_release:
+                    app.root.current = "detailed"
+                    root.manager.transition.direction = "left"
+
+        
+        
+            Button:
+                text:"Go Back"
+                on_release:
+                    app.root.current = "test"
+                    root.manager.transition.direction = "right"
+
+
+<DetailedImgWindow>:
+    canvas.before:
+        Color:
+            rgba: (169/255, 169/255, 169/255, 1)
+        Rectangle:
+            pos: self.pos
+            size: self.size
+    name: "detailed"
+    GridLayout:
+
+        cols:1
+        Image:
+            id: detailedimg
+            source:"start_cam.png"
+        
+        
+        GridLayout:
+            cols:2
+            size_hint: (0.6, 0.3)
+
+            Button:
+                text:"Refresh"
+
+        
+        
+            Button:
+                text:"Go Back"
+                on_release:
+                    app.root.current = "inputimgwindow"
+                    root.manager.transition.direction = "right"
+
+
+
+<ResultWindow>:
+    canvas.before:
+        Color:
+            rgba: (169/255, 169/255, 169/255, 1)
+        Rectangle:
+            pos: self.pos
+            size: self.size
+    name: "result"
+    GridLayout:
+        size_hint: (0.6, 0.7)
+        pos_hint:{"center_x": 0.5,"center_y":0.5}
+        cols:1
+        Image:
+            id: result_img
+            source:"output.png"
+        Button:
+            text: "Go Back"
+            on_release:
+                app.root.current = 'test'
+                root.manager.transition.direction = "right"
+        
+            
+    
+
+<CameraClick>:
+    name: "camera"
+    cols: 1
+    GridLayout:
+        cols:1
+        GridLayout:
+            cols:2
+            
+            Image:
+                size_hint: (4, 2)
+                id: result_img
+                source:"start_cam.png"
+            GridLayout:
+                cols:1
+                Switch:
+                    text: "On/Off"
+                    id: switch
+                    size_hint: 0.3, 0.3
+
+                Switch:
+                    text: "details"
+                    id: vidswitch
+                    size_hint: 0.3, 0.3
+            
+        Button:
+            id: back
+            text: "Go Back"
+            size_hint: 0.3, 0.3
+            on_release:
+                app.root.current = "main"
+                root.manager.transition.direction = "right"
+
+<InputAnswers>:
+    canvas.before:
+        Color:
+            rgba: (169/255, 169/255, 169/255, 1)
+        Rectangle:
+            pos: self.pos
+            size: self.size
+    name: "inputans"
+    GridLayout:
+        size_hint: (0.6, 0.7)
+        pos_hint:{"center_x": 0.5,"center_y":0.5}
+        cols:1
+        GridLayout:
+            cols:2
+            canvas.before:
+                Color:
+                    rgba: (120/255, 120/255, 120/255, 1)
+                Rectangle:
+                    pos: self.pos
+                    size: self.size
+            Label:
+                text:"Number of Questions: "
+            TextInput:
+                id: number_of_questions
+                text:"5"
+                halign: "center"
+            
+            Label:
+                text:"Number of Choices: "
+            TextInput:
+                id: number_of_choices
+                text: "5"
+                halign: "center"
+            
+            Label:
+                text: "Correct Answers:"
+            TextInput:
+                id: correct_answers
+                text: "23125"
+                halign: "center"
+
+        Button:
+            id:save_ans
+            text: "Save"
+            on_release: root.saveanswers()
+
+        Button:
+            id: selected_path
+            text:"Using Image File"
+            on_release:
+                root.file_chooser()   
+
+        Button:
+            text: "Go Back"
+            on_press:
+                app.root.current = "main"
+                root.manager.transition.direction = "right"
+
+<InputCamera>:
+    name : "cam"
+    cols: 1
+    BoxLayout:
+        
+        orientation: 'vertical'
+        Image:
+            id: camera
+            source: "start_cam.png"
+            
+        Switch:
+            id: toggle
+            text: 'Play'
+            size_hint_y: None
+            height: '48dp'
+        Button:
+            text: 'Capture'
+            size_hint_y: None
+            height: '48dp'
+            on_press:
+                root.cheese()
+                app.root.current = "test"
+        Button:
+            text: 'Go Back'
+            size_hint_y: None
+            height: '48dp'
+            on_press:
+                app.root.current = "test"
+                root.manager.transition.direction = "right"
+
